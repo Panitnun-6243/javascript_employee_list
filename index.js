@@ -14,7 +14,7 @@ const loadTable = () => {
         trHTML += "<td>" + object["fname"] + "</td>";
         trHTML += "<td>" + object["lname"] + "</td>";
         trHTML += "<td>" + object["username"] + "</td>";
-        trHTML += "<td></td>"//ปุ่ม edit/delete
+        trHTML += "<td><div style='margin-right:5px;display: flex;flex-direction: row;column-gap: 10px;'><button type='button' class='btn btn-outline-info'><i class='bi bi-trash text-light'></i> Edit</button><button type='button' class='btn btn-outline-warning'><i class='bi bi-trash text-light'></i> Delete</button></div></td>"
         trHTML += "</tr>";
       }
       document.getElementById("tableData").innerHTML = trHTML
