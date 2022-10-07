@@ -21,6 +21,21 @@ app.get('/users', async (req, res) => {
   res.status(200).send(users)
 })
 
+//GET request by ID
+app.get('/users/:id', async (req, res) => {
+    const id = parseInt(req.params.id)
+    //connect to mongoDB
+    const client = new MongoClient(process.env.MONGO_URI)
+    await client.connect()
+    //query all user information
+    const user = await client.db('employeeListDB').collection('users').findOne({"id": id})
+    client.close()
+    res.status(200).send({
+        "status": "Ok",
+        "user": user
+    })
+  })
+
 //POST request
 app.post('/users/create', async (req, res) => {
     const user = req.body
