@@ -86,6 +86,22 @@ app.put('/users/update', async (req, res) => {
     })
 })
 
+//DELETE request
+app.delete('/users/delete', async (req, res) => {
+    const user = req.body
+    const id = user.id
+    const client = new MongoClient(process.env.MONGO_URI)
+    await client.connect()
+    await client.db('employeeListDB').collection('users').deleteOne({"id": id})
+    await client.close()
+
+    //check if data deleted successful or not
+    res.status(200).send({
+        "status": "Ok",
+        "message": "Delete user successfully"
+    })
+})
+
 //listen
 app.listen(port, () => {
   console.log(`Employee lists app listening on port ${port}`)
