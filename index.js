@@ -18,7 +18,7 @@ const loadTable = () => {
         trHTML += "<td>" + object["lname"] + "</td>";
         trHTML += "<td>" + object["username"] + "</td>";
         trHTML +=
-          "<td><div style='margin-right:5px;display: flex;flex-direction: row;column-gap: 10px;'><button type='button' class='btn btn-outline-info' onclick='showUserUpdateDialog(" + object['id'] + ")'>Edit</button><button type='button' class='btn btn-outline-warning'>Delete</button></div></td>";
+          "<td><div style='margin-right:5px;display: flex;flex-direction: row;column-gap: 10px;'><button type='button' class='btn btn-outline-info' onclick='showUserUpdateDialog(" + object['id'] + ")'>Edit</button><button type='button' class='btn btn-outline-warning' onclick='userDelete(" + object['id'] + ")'>Delete</button></div></td>";
         trHTML += "</tr>";
       }
       document.getElementById("tableData").innerHTML = trHTML;
@@ -29,7 +29,7 @@ loadTable();
 //Add new member modal dialog
 const showUserCreateDialog = () => {
   Swal.fire({
-    title: "Add new employee",
+    title: "Add New Employee",
     html:
       '<input id="fname" class="swal2-input" placeholder="First name">' +
       '<input id="lname" class="swal2-input" placeholder="Last name">' +
@@ -77,7 +77,7 @@ const showUserUpdateDialog = (id) => {
       const object = JSON.parse(this.responseText);
       const user = object['user']
       Swal.fire({
-        title: `Edit employee info id: ${id}`,
+        title: "Edit Employee Information",
         html:
           '<input id="id" type="hidden" class="swal2-input" placeholder="First name" value="'+ user['id'] +'">' +
           '<input id="fname" class="swal2-input" placeholder="First name" value="'+ user['fname'] +'">' +
@@ -118,4 +118,20 @@ const userUpdate = () => {
       loadTable()
     }
   }
-} 
+}
+//DELETE request
+const userDelete = (id) => {
+  const xhttp = new XMLHttpRequest()
+  xhttp.open("DELETE", "https://www.melivecode.com/api/users/delete")
+  xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
+  xhttp.send(JSON.stringify({
+    "id": id
+  }))
+  xhttp.onreadystatechange = function(){
+    if (this.readyState == 4 && this.status == 200){
+      const object = JSON.parse(this.responseText);
+      Swal.fire(object['message'])
+      loadTable()
+    }
+  }
+}
