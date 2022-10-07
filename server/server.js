@@ -64,7 +64,7 @@ app.post('/users/create', async (req, res) => {
 app.put('/users/update', async (req, res) => {
     const user = req.body
     //fetch id from user object
-    const id = user.id
+    const id = parseInt(user.id)
     //connect to mongoDB
     const client = new MongoClient(process.env.MONGO_URI)
     await client.connect()

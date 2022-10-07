@@ -1,7 +1,7 @@
 //GET request
 const loadTable = () => {
   const xhttp = new XMLHttpRequest();
-  xhttp.open("GET", "https://www.melivecode.com/api/users");
+  xhttp.open("GET", "http://localhost:3000/users");
   xhttp.send();
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
@@ -31,6 +31,7 @@ const showUserCreateDialog = () => {
   Swal.fire({
     title: "Add New Employee",
     html:
+    '<input id="id" class="swal2-input" placeholder="ID">' +
       '<input id="fname" class="swal2-input" placeholder="First name">' +
       '<input id="lname" class="swal2-input" placeholder="Last name">' +
       '<input id="username" class="swal2-input" placeholder="Username">' +
@@ -44,15 +45,17 @@ const showUserCreateDialog = () => {
 };
 //POST request
 const userCreate = () => {
+  const id = document.getElementById("id").value
   const fname = document.getElementById("fname").value
   const lname = document.getElementById("lname").value
   const username = document.getElementById("username").value
   const email = document.getElementById("email").value
   const avatar = document.getElementById("avatar").value
   const xhttp =  new XMLHttpRequest()
-  xhttp.open("POST", "https://www.melivecode.com/api/users/create")
+  xhttp.open("POST", "http://localhost:3000/users/create")
   xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
   xhttp.send(JSON.stringify({
+    "id": id,
     "fname": fname,
     "lname": lname,
     "username": username,
@@ -70,7 +73,7 @@ const userCreate = () => {
 //Update new member modal dialog
 const showUserUpdateDialog = (id) => {
   const xhttp = new XMLHttpRequest()
-  xhttp.open("GET", "https://www.melivecode.com/api/users/" + id);
+  xhttp.open("GET", `http://localhost:3000/users/${id}`);
   xhttp.send();
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
@@ -79,7 +82,7 @@ const showUserUpdateDialog = (id) => {
       Swal.fire({
         title: "Edit Employee Information",
         html:
-          '<input id="id" type="hidden" class="swal2-input" placeholder="First name" value="'+ user['id'] +'">' +
+          '<input id="id" class="swal2-input" placeholder="First name" value="'+ user['id'] +'" disabled>' +
           '<input id="fname" class="swal2-input" placeholder="First name" value="'+ user['fname'] +'">' +
           '<input id="lname" class="swal2-input" placeholder="Last name" value="'+ user['lname'] +'">' +
           '<input id="username" class="swal2-input" placeholder="Username" value="'+ user['username'] +'">' +
@@ -101,7 +104,7 @@ const userUpdate = () => {
   const email = document.getElementById("email").value
   const avatar = document.getElementById("avatar").value
   const xhttp = new XMLHttpRequest()
-  xhttp.open("PUT", "https://www.melivecode.com/api/users/update")
+  xhttp.open("PUT", "http://localhost:3000/users/update")
   xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
   xhttp.send(JSON.stringify({
     "id": id,
@@ -122,7 +125,7 @@ const userUpdate = () => {
 //DELETE request
 const userDelete = (id) => {
   const xhttp = new XMLHttpRequest()
-  xhttp.open("DELETE", "https://www.melivecode.com/api/users/delete")
+  xhttp.open("DELETE", "http://localhost:3000/users/delete")
   xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
   xhttp.send(JSON.stringify({
     "id": id
