@@ -10,14 +10,15 @@ const { MongoClient } = require('mongodb')
 app.use(cors())
 app.use(express.json())
 
-//routes
-app.get('/', (req, res) => {
-  res.send('Hello world')
-})
-
-//listen
-app.listen(port, () => {
-  console.log(`Employee lists app listening on port ${port}`)
+//GET request
+app.get('/users', async (req, res) => {
+  //connect to mongoDB
+  const client = new MongoClient(process.env.MONGO_URI)
+  await client.connect()
+  //query all user information
+  const users = await client.db('employeeListDB').collection('users').find({}).toArray()
+  client.close()
+  res.status(200).send(users)
 })
 
 //POST request
@@ -42,4 +43,9 @@ app.post('/users/create', async (req, res) => {
         "status": "Ok",
         "message": "Create user successfully"
     })
+})
+
+//listen
+app.listen(port, () => {
+  console.log(`Employee lists app listening on port ${port}`)
 })
