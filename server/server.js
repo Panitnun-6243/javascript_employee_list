@@ -60,6 +60,32 @@ app.post('/users/create', async (req, res) => {
     })
 })
 
+//PUT request
+app.put('/users/update', async (req, res) => {
+    const user = req.body
+    //fetch id from user object
+    const id = user.id
+    //connect to mongoDB
+    const client = new MongoClient(process.env.MONGO_URI)
+    await client.connect()
+    //insert data to database
+    await client.db('employeeListDB').collection('users').updateOne({ "id":id }, {"$set": {
+        fname: user.fname,
+        lname: user.lname,
+        username: user.username,
+        email: user.email,
+        avatar: user.avatar  
+    }}) 
+    await client.close()
+
+    //check if data updates successful or not
+    res.status(200).send({
+        "status": "Ok",
+        "message": "Update user successfully",
+        "user": user
+    })
+})
+
 //listen
 app.listen(port, () => {
   console.log(`Employee lists app listening on port ${port}`)
